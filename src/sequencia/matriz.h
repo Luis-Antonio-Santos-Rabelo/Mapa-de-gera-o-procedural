@@ -17,7 +17,24 @@ class Matriz{
                     
                 }
             }
+        }
+
+        Matriz(T padrao) : lin(1), col(1), padrao(padrao) {
+            dados = new T[1];
+            
         }   
+
+        ~Matriz() {
+            delete[] dados;
+        }
+
+
+        T getValue(int linha, int coluna) {
+            if (linha < lin && coluna < col) {
+                return dados[linha * col + coluna];    
+            }
+            return padrao;
+        }
 };
 
 
