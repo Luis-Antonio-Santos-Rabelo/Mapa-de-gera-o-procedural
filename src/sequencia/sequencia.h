@@ -9,9 +9,6 @@ class Sequencia {
   int tamanho;
   T *dados;
 
-
-
-
   void ajustaCapacidade() {
     capacidade++;
     capacidade *= 2;
@@ -45,10 +42,6 @@ public:
       ajustaCapacidade();
       adicionar(valor);
     }
-  }
-
-  T obterIndice(int indice) {
-    return dados[indice];
   }
 
   T& operator[](int index) {
