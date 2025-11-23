@@ -37,13 +37,11 @@ class Paleta {
     Paleta(std::string path) {
       std::ifstream input;
       std::string tmpString = "";
-      int lineCount = 0;
 
       input.open(path);
 
       if(!input.is_open()) {
         std::cerr << "Erro abrindo o arquivo";
-        //paletaInterna = Sequencia<Cor>(1);
         tamanho = 0;
         
       } else {

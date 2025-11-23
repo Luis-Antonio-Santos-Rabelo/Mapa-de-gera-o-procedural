@@ -3,7 +3,8 @@
 #include "imagem.h"
 
 TEST_CASE("Testa a criação de uma imagem com largura e altura específicas") {
-    Imagem img(100, 50);
+    Imagem img(100, 50); 
+    
     CHECK(img.obterLargura() == 100);
     CHECK(img.obterAltura() == 50);
 }
