@@ -36,6 +36,23 @@ class Matriz{
             
         }
 
+        Matriz<T>& operator=(const Matriz<T>& outra) {
+            if (this == &outra) {
+                return *this;
+            }
+
+            lin = outra.lin;
+            col = outra.col;
+            delete[] dados;
+            dados = new T[lin * col];
+            for(int i = 0; i < lin * col; i++) {
+                dados[i] = outra.dados[i];    
+            }
+
+            return *this;
+            
+        }
+
 
         T getValor(int linha, int coluna) {
             if (linha < lin && coluna < col) {
@@ -73,6 +90,9 @@ class Matriz{
         T& getRef(int linha, int coluna) {
             return dados[linha * col + coluna];
         }
+
+        int getLinhas() {return lin;}
+        int getColunas() {return col;}
 };
 
 
