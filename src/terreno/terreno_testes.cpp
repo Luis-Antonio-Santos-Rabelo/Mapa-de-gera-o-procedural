@@ -15,18 +15,60 @@ TEST_CASE("Testa a geração aleatória de altitudes") {
 }
 
 TEST_CASE("Testa o passo diamond") {
-  Terreno ter(2);
-  ter(0, 0) = 3;
-  ter(0, 4) = 5;
-  ter(4, 0) = 3;
-  ter(4, 4) = 5;
+  Terreno terreno(2);
+  terreno(0, 0) = 3;
+  terreno(0, 4) = 5;
+  terreno(4, 0) = 3;
+  terreno(4, 4) = 5;
   int ponto[2] = {2, 2};
    
-  ter.diamond(ponto, 1);
+  terreno.diamondTest(ponto, 1);
 
-  CHECK(ter(2, 2) == 4);
+  CHECK(terreno(2, 2) == 4);
   
 }
+
+
+TEST_CASE("Testa o passo square") {
+  Terreno terreno(2);
+  terreno(0, 0) = 3;
+  terreno(0, 4) = 5;
+  terreno(4, 0) = 3;
+  terreno(4, 4) = 5;
+  int ponto1[2] = {2, 2};
+  int ponto2[2] = {0, 2};
+
+  terreno.diamondTest(ponto1, 1);   
+  terreno.squareTest(ponto2, 2);
+
+
+  CHECK(terreno(2, 2) == 4);
+  CHECK(terreno(0, 2) == 4);
+
+
+  
+}
+
+
+TEST_CASE("Testa o diamondSquare") {
+  Terreno terreno(2);
+  terreno(0, 0) = 4;
+  terreno(0, 4) = 8;
+  terreno(4, 0) = 4;
+  terreno(4, 4) = 3;
+  int ponto1[2] = {2, 2};
+  //int ponto2[2] = {0, 2};
+
+  terreno.print();    
+  
+  terreno.diamondSquareTest(ponto1, 0);
+
+  terreno.print();
+
+  CHECK(terreno(1, 1) == 4);
+    
+}
+
 
 
 // Você precisará criar testes adicionais para cobrir os métodos privados da classe.
