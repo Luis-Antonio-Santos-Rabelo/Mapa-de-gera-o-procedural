@@ -53,16 +53,20 @@ TEST_CASE("Testa o passo square") {
 TEST_CASE("Testa o diamondSquare") {
   Terreno terreno(2);
   terreno(0, 0) = 4;
-  terreno(0, 4) = 4;
+  terreno(0, 4) = 8;
   terreno(4, 0) = 4;
-  terreno(4, 4) = 4;
+  terreno(4, 4) = 3;
   int ponto1[2] = {2, 2};
   //int ponto2[2] = {0, 2};
 
-  terreno.diamondSquare(ponto1, 1);
+  terreno.print();    
+  
+  terreno.diamondSquareTest(ponto1, 0);
+
+  terreno.print();
 
   CHECK(terreno(1, 1) == 4);
-  
+    
 }
 
 
