@@ -115,12 +115,13 @@ class Terreno {
       seed = time(0);
     }
 
-    Terreno(int exp, int semente) {
+    Terreno(int exp, int semente, float rug) {
       int lado;
       if (exp == 0) lado = 1;
       else lado = std::pow(2, exp) + 1;
       alturas = Matriz(lado, lado, 0);
       seed = semente;
+      rugosidade = rug;
     }
     
 

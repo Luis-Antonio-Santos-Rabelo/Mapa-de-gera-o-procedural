@@ -75,7 +75,7 @@ TEST_CASE("Testa a geração de cantos") {
 }
 
 TEST_CASE("Testa a geração de cantos a partir de uma seed fixa") {
-  Terreno terreno(3, 44);
+  Terreno terreno(3, 44, 0.5);
   terreno.genCantos();
 
   CHECK(terreno(0, 0) != 0);
@@ -84,7 +84,7 @@ TEST_CASE("Testa a geração de cantos a partir de uma seed fixa") {
 }
 
 TEST_CASE("Testa a geração aleatoria de cantos, mas manualmente") {
-  Terreno terrain(3, 409);
+  Terreno terrain(3, 409, 0.5);
   terrain.genCantos();
   terrain.geraTerreno();
 
