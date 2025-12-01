@@ -39,8 +39,7 @@ TEST_CASE("Testa o passo square") {
   int ponto2[2] = {0, 2};
 
   terreno.diamondTest(ponto1, 1);   
-  terreno.squareTest(ponto2, 2);
-
+  terreno.squareTest(ponto2, 1);
 
   CHECK(terreno(2, 2) == 4);
   CHECK(terreno(0, 2) == 4);
@@ -57,16 +56,42 @@ TEST_CASE("Testa o diamondSquare") {
   terreno(4, 0) = 4;
   terreno(4, 4) = 3;
   int ponto1[2] = {2, 2};
-  //int ponto2[2] = {0, 2};
 
-  terreno.print();    
   
   terreno.diamondSquareTest(ponto1, 0);
 
-  terreno.print();
-
   CHECK(terreno(1, 1) == 4);
     
+}
+
+TEST_CASE("Testa a geração de cantos") {
+  Terreno terreno(3);
+  terreno.genCantos();
+
+
+  bool cantos = terreno(0, 0) != 0 || terreno(8, 0) != 0 || terreno(0, 8) != 0 || terreno(8,8) != 0;
+
+  CHECK(cantos);
+}
+
+TEST_CASE("Testa a geração de cantos a partir de uma seed fixa") {
+  Terreno terreno(3, 44, 0.5);
+  terreno.genCantos();
+
+  CHECK(terreno(0, 0) != 0);
+  terreno.print();
+
+}
+
+TEST_CASE("Testa a geração aleatoria de cantos, mas manualmente") {
+  Terreno terrain(3, 409, 0.5);
+  terrain.genCantos();
+  terrain.geraTerreno();
+
+  terrain.print();
+
+  CHECK(true); // Só pra ter certeza que não deu nenhum erro
+  
 }
 
 
