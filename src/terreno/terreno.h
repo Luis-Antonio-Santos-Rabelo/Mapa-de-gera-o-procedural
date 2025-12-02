@@ -1,3 +1,5 @@
+#pragma once
+
 #include "../sequencia/matriz.h"
 #include "../sequencia/sequencia.h"
 #include <cmath>
@@ -128,17 +130,17 @@ class Terreno {
     void genCantos() {
       int size = obterLargura();
       std::srand((unsigned int)(seed + 0 * obterLargura() + 0));
-      int val1 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*2);
+      int val1 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*4);
 
       std::srand((unsigned int)(seed + 0 * size + (size-1)));
-      int val2 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*2);
+      int val2 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*4);
 
       std::srand((unsigned int)(seed + (size-1) * size + 0));
-      int val3 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*2);
+      int val3 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*4);
 
 
       std::srand((unsigned int)(seed + (size-1) * size + (size-1)));
-      int val4 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*2);
+      int val4 = ((std::rand() % (2 * limiteRNG * 4))) - (limiteRNG*4);
 
       alturas.getRef(0,0) = val1;
       alturas.getRef(0,size-1) = val2;      
@@ -248,7 +250,7 @@ class Terreno {
           std::cout << alturas.getValor(i, j) << " ";
         }   
         std::cout << "\n";
-    }  
+      }  
       
     }    
   

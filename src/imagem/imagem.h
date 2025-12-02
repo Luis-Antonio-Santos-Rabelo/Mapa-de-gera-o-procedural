@@ -1,9 +1,13 @@
+#pragma once
+
 #include "../sequencia/matriz.h"
 #include "../sequencia/sequencia.h"
 #include <cstdlib>
+#include <limits>
 #include <string>
 #include <sstream>
 #include <fstream>
+#include "../terreno/terreno.h"
 
 
 struct Pixel{
@@ -102,6 +106,39 @@ class Imagem {
     Pixel& operator()(int coluna, int linha) {
       return img.getRef(linha, coluna);
     }    
+
+
+
+    void normalizaTerreno(Terreno& terrain) {
+      int min = std::numeric_limits<int>::max();
+      int max = std::numeric_limits<int>::lowest();
+
+      for (int i = 0; i < terrain.obterLargura(); i++) {
+        for(int j = 0; j < terrain.obterProfundidade(); j++) {
+          int tmp  = terrain(i , j);
+          if (tmp < min) min = tmp;
+          if (tmp > max) max = tmp;
+        }
+      }
+
+      for (int i = 0; i < terrain.obterLargura(); i++) {
+        for(int j = 0; j < terrain.obterProfundidade(); j++) {
+            int tmp = terrain(i, j);
+
+            if (max - min != 0) { // Avoid division by zero
+                tmp = 0 + (tmp - min) * (255 - 0) / (max - min);
+            } else {
+                tmp = (0 + 255) / 2.0; // If all values are the same, set to midpoint of new range
+            }
+        }
+      }
+
       
+    }
+
+
+    bool escalaDeCinzas(Terreno terrain) {
+      
+    }
 
 };
