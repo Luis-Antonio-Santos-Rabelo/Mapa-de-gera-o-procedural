@@ -38,6 +38,16 @@ class Matriz{
             
         }
 
+        
+        //Operador de cópia, necessário para poder retornar de uma função
+        Matriz(const Matriz& outra) : lin(outra.lin), col(outra.col), padrao(outra.padrao) {
+            dados = new T[lin * col];
+            for(int i = 0; i < lin * col; i++) {
+                dados[i] = outra.dados[i];
+            }
+        }
+        
+
         Matriz<T>& operator=(const Matriz<T>& outra) {
             if (this == &outra) {
                 return *this;

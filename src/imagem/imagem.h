@@ -109,10 +109,12 @@ class Imagem {
 
 
 
-    void normalizaTerreno(Terreno& terrain) {
+    Terreno normalizaTerreno(Terreno& terrain) {
       int min = std::numeric_limits<int>::max();
       int max = std::numeric_limits<int>::lowest();
 
+      Terreno tmpT(terrain.obterExpoente());
+      
       for (int i = 0; i < terrain.obterLargura(); i++) {
         for(int j = 0; j < terrain.obterProfundidade(); j++) {
           int tmp  = terrain(i , j);
@@ -124,21 +126,36 @@ class Imagem {
       for (int i = 0; i < terrain.obterLargura(); i++) {
         for(int j = 0; j < terrain.obterProfundidade(); j++) {
             int tmp = terrain(i, j);
+            int valor;
 
-            if (max - min != 0) { // Avoid division by zero
-                tmp = 0 + (tmp - min) * (255 - 0) / (max - min);
+            if (max - min != 0) {
+                valor = 0 + (tmp - min) * (255 - 0) / (max - min);
             } else {
-                tmp = (0 + 255) / 2.0; // If all values are the same, set to midpoint of new range
+                valor = (0 + 255) / 2;
             }
+
+            tmpT(i, j) =  valor;
         }
       }
 
-      
+      return tmpT;
     }
 
 
-    bool escalaDeCinzas(Terreno terrain) {
-      
+    void escalaDeCinzas(Terreno& terrain) {
+      lin = terrain.obterLargura();
+      col = terrain.obterProfundidade();
+      img = Matriz<Pixel>(lin, col, {0,0,0});
+      Terreno terreno = normalizaTerreno(terrain);
+      for (int i = 0; i < lin; i++) {
+        for(int j = 0; j < col; j++) {
+          unsigned char tmp  = (unsigned char)terreno(i , j);
+
+          Pixel cinza  = {tmp, tmp, tmp};
+          img.mudarValor(i, j, cinza);     
+          
+        }
+      }
     }
 
 };
