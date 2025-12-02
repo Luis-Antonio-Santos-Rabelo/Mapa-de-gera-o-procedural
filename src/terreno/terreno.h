@@ -165,8 +165,8 @@ class Terreno {
         rug = rug * rug;
 
         //Diamond aqui
-        for (int i = meioPasso; i < size - 1; i += passo) {
-          for (int j = meioPasso; j < size - 1; j += passo) {
+        for (int i = 0; i < size - 1; i += passo) {
+          for (int j = 0; j < size - 1; j += passo) {
             
             int v1 = alturas.getValor(i, j);                 
             int v2 = alturas.getValor(i + passo, j);         
