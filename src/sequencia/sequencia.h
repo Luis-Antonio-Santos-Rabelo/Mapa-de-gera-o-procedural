@@ -44,6 +44,23 @@ public:
     }
   }
 
+  Sequencia<T>& operator=(const Sequencia<T>& outra) {
+            if (this == &outra) {
+                return *this;
+            }
+
+            capacidade = outra.capacidade;
+            tamanho = outra.tamanho;
+            delete[] dados;
+            dados = new T[capacidade];
+            for(int i = 0; i < tamanho; i++) {
+                dados[i] = outra.dados[i];    
+            }
+
+            return *this;
+            
+        }
+
   T& operator[](int index) {
     if (index < tamanho && index >= 0) {
       return dados[index];

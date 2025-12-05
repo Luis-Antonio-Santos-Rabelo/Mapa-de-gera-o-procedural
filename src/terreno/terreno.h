@@ -2,6 +2,8 @@
 
 #include "../sequencia/matriz.h"
 #include "../sequencia/sequencia.h"
+#include "../imagem/imagem.h"
+#include "../paleta/paleta.h"
 #include <cmath>
 #include <cstdlib>
 
@@ -10,102 +12,14 @@ class Terreno {
   Matriz<int> alturas;
   int expoente;
   int seed;
-  int limiteRNG = 20;
+  int limiteRNG = 60;
   float rugosidade = 0.5;
   
 
 
   int rng(int lin, int col) {
     std::srand((unsigned int)(seed + lin * obterLargura() + col));
-    return ((std::rand() % (2 * limiteRNG))) - limiteRNG;
-    
-  }
-
-  void diamond(int p[2], int contador) {
-    
-    int passo = obterLargura() / std::pow(2, contador);
-    float rug = rugosidade  / std::pow(2, contador-1);
-
-    int deslocamento = rng(p[0], p[1]) * rug;
-    int sum = alturas.getRef(p[0] - passo, p[1] - passo);
-    sum += alturas.getRef(p[0] + passo, p[1] - passo);
-    sum += alturas.getRef(p[0] - passo, p[1] + passo);
-    sum += alturas.getRef(p[0] + passo, p[1] + passo);
-
-    alturas.mudarValor(p[0], p[1], (sum/4) + deslocamento);
-    
-  }
-
-  void square(int p[2], int contador) {
-    int passo = obterLargura() / std::pow(2, contador);
-    float rug = rugosidade / std::pow(2, contador-1);
-    int size = this->obterLargura();
-    
-    //if (passo == 0) return;
-
-    int tamanhoAmostra = 0;
-
-    int sum = 0;
-
-    int deslocamento = rng(p[0], p[1]) * rug;
-
-    if (p[1] - passo >= 0) {
-      tamanhoAmostra++;
-      sum += alturas.getRef(p[0], p[1] - passo);
-    }
-
-    if (p[1] + passo < size) {
-      tamanhoAmostra++;
-      sum += alturas.getRef(p[0], p[1] + passo);
-    }
-
-    if (p[0] - passo >= 0) {
-      tamanhoAmostra++;
-      sum += alturas.getRef(p[0] - passo, p[1]);
-    }
-
-    if (p[0] + passo < size) {
-      tamanhoAmostra++;
-      sum += alturas.getRef(p[0] + passo, p[1]);
-    }
-        
-    alturas.mudarValor(p[0], p[1], (sum/tamanhoAmostra) + deslocamento);
-
-  }
-
-
-  void diamondSquare(int ponto[2], int contador) {
-    int size = alturas.getLinhas();
-    int nCounter = contador + 1;
-    int passo = size / std::pow(2, nCounter);
-    if (passo == 0) return;
-    
-    int meioPasso = passo / 2;
-    
-    
-    diamond(ponto, nCounter);
-
-    int p1[2] = {ponto[0] + passo, ponto[1]};
-    int p2[2] = {ponto[0], ponto[1] - passo};
-    int p3[2] = {ponto[0], ponto[1] + passo};
-    int p4[2] = {ponto[0] - passo, ponto[1]};
-    
-    square(p1, nCounter);
-    square(p2, nCounter);
-    square(p3, nCounter);
-    square(p4, nCounter);
-
-    int np1[2] = {ponto[0] + meioPasso, ponto[1] + meioPasso};
-    int np2[2] = {ponto[0] + meioPasso, ponto[1] - meioPasso};
-    int np3[2] = {ponto[0] - meioPasso, ponto[1] + meioPasso};
-    int np4[2] = {ponto[0] - meioPasso, ponto[1] - meioPasso};
-    
-    diamondSquare(np1, nCounter);
-    diamondSquare(np2, nCounter);
-    diamondSquare(np3, nCounter);
-    diamondSquare(np4, nCounter);
-
-
+    return (((std::rand() % (2 * limiteRNG))) - limiteRNG);
     
   }
 
@@ -158,11 +72,11 @@ class Terreno {
     void geraTerreno() {
       int size = obterLargura();
       int passo = size - 1;
-      float rug = rugosidade;
+      float rug = 1.0f;
 
       while (passo > 1) {
         int meioPasso = passo / 2;
-        rug = rug * rug;
+        //rug = rug * rugosidade;
 
         //Diamond aqui
         for (int i = 0; i < size - 1; i += passo) {
@@ -201,100 +115,9 @@ class Terreno {
         }
 
         passo /= 2;
+        rug = rug * rugosidade;
       }
     }
-
-    
-
-    void geraTerrenoRecursivo() {
-      int p[2] = {obterLargura() / 2, obterProfundidade() / 2};
-      this->diamondSquare(p, 0);
-    }
-
-    
-
-
-    void diamondTest(int p[2], int contador) {
-
-      int passo = obterLargura() / std::pow(2, contador);
-      int sum = alturas.getRef(p[0] - passo, p[1] - passo);
-      sum += alturas.getRef(p[0] + passo, p[1] - passo);
-      sum += alturas.getRef(p[0] - passo, p[1] + passo);
-      sum += alturas.getRef(p[0] + passo, p[1] + passo);
-
-      alturas.mudarValor(p[0], p[1], sum/4);
-      
-    }
-
-    void squareTest(int p[2], int contador) {
-      int passo = obterLargura() / std::pow(2, contador);
-      int size = this->obterLargura();
-    
-      int tamanhoAmostra = 0;
-      int sum = 0;
-
-      if (p[1] - passo >= 0) {
-        tamanhoAmostra++;
-        sum += alturas.getRef(p[0], p[1] - passo);
-      }
-
-      if (p[1] + passo < size) {
-        tamanhoAmostra++;
-        sum += alturas.getRef(p[0], p[1] + passo);
-      }
-
-      if (p[0] - passo >= 0) {
-        tamanhoAmostra++;
-        sum += alturas.getRef(p[0] - passo, p[1]);
-      }
-
-      if (p[0] + passo < size) {
-        tamanhoAmostra++;
-        sum += alturas.getRef(p[0] + passo, p[1]);
-      }
-        
-      alturas.mudarValor(p[0], p[1], sum/tamanhoAmostra);
-      
-    }
-
-    void diamondSquareTest(int ponto[2], int contador) {
-      int size = alturas.getLinhas();
-      int nCounter = contador + 1;
-      int passo = size / std::pow(2, nCounter);
-
-      if (passo == 0) return;
-    
-      int meioPasso = passo / 2;
-    
-    
-      diamondTest(ponto, nCounter);
-
-      int p1[2] = {ponto[0] + passo, ponto[1]};
-      int p2[2] = {ponto[0], ponto[1] - passo};
-      int p3[2] = {ponto[0], ponto[1] + passo};
-      int p4[2] = {ponto[0] - passo, ponto[1]};
-    
-      squareTest(p1, nCounter);
-      squareTest(p2, nCounter);
-      squareTest(p3, nCounter);
-      squareTest(p4, nCounter);
-
-
-      int np1[2] = {ponto[0] + meioPasso, ponto[1] + meioPasso};
-      int np2[2] = {ponto[0] + meioPasso, ponto[1] - meioPasso};
-      int np3[2] = {ponto[0] - meioPasso, ponto[1] + meioPasso};
-      int np4[2] = {ponto[0] - meioPasso, ponto[1] - meioPasso};
-
-      rugosidade = rugosidade / 2;
-    
-      diamondSquareTest(np1, nCounter);
-      diamondSquareTest(np2, nCounter);
-      diamondSquareTest(np3, nCounter);
-      diamondSquareTest(np4, nCounter);
-    
-  }
-    
-    
 
     int obterLargura() { return alturas.getColunas();}
     int obterProfundidade() {return alturas.getLinhas();}
@@ -312,7 +135,95 @@ class Terreno {
         std::cout << "\n";
       }  
       
-    }    
-  
+    }
+
+    void normalizaTerreno() {
+      int min = std::numeric_limits<int>::max();
+      int max = std::numeric_limits<int>::lowest();
+      
+      for (int i = 0; i < this->obterLargura(); i++) {
+        for(int j = 0; j < this->obterProfundidade(); j++) {
+          int tmp  = (*this)(i , j);
+          if (tmp < min) min = tmp;
+          if (tmp > max) max = tmp;
+        }
+      }
+
+      for (int i = 0; i < this->obterLargura(); i++) {
+        for(int j = 0; j < this->obterProfundidade(); j++) {
+            int tmp = (*this)(i, j);
+            int valor;
+
+            if (max - min != 0) {
+                valor = 0 + (tmp - min) * (255 - 0) / (max - min);
+            } else {
+                valor = (0 + 255) / 2;
+            }
+
+            (*this)(i, j) =  valor;
+        }
+      }
+    }  
+
+    Imagem escalaDeCinzas() {
+      Imagem img = Imagem(obterLargura(), obterProfundidade());
+      for (int i = 0; i < obterLargura(); i++) {
+        for(int j = 0; j < obterProfundidade(); j++) {
+          unsigned char tmp  = (unsigned char)(*this)(i , j);
+
+          Pixel cinza  = {tmp, tmp, tmp};
+          img(i, j) = cinza;     
+          
+        }
+      }
+      return img;
+    }  
+
+    Imagem converterParaImagemColorida(Paleta& paleta) {
+      int min = std::numeric_limits<int>::max();
+      int max = std::numeric_limits<int>::lowest();
+      
+      for (int i = 0; i < alturas.getLinhas(); i++) {
+        for (int j = 0; j < alturas.getColunas(); j++) {
+          int val = alturas.getValor(i, j);
+          if (val < min) min = val;
+          if (val > max) max = val;
+        }
+      }
+
+      Imagem img(alturas.getColunas(), alturas.getLinhas());
+
+      int range = max - min;
+      int maxIndicePaleta = paleta.obterTamanho() - 1;
+
+      for (int i = 0; i < alturas.getLinhas(); i++) {
+        for (int j = 0; j < alturas.getColunas(); j++) {
+          
+          int alturaAtual = alturas.getValor(i, j);
+          int indice;
+
+          if (range == 0) {
+              indice = 0; 
+          } else {
+              indice = (int)(((long)(alturaAtual - min) * maxIndicePaleta) / range);
+          }
+
+          if (indice < 0) indice = 0;
+          if (indice > maxIndicePaleta) indice = maxIndicePaleta;
+
+          Cor tmp = paleta.obterCor(indice); 
+          
+          img(j, i) = {tmp.r, tmp.g, tmp.b}; 
+        }
+      }
+
+      return img;
+    }
+
+
+
+    void testRNG() {
+     std::cout << rng(1, 2) << " " << rng(2, 3) << "\n";
+    }
   
 };

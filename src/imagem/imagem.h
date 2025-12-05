@@ -7,12 +7,12 @@
 #include <string>
 #include <sstream>
 #include <fstream>
-#include "../terreno/terreno.h"
 
 
 struct Pixel{
   unsigned char r, g, b;
 };
+
 
 class Imagem {
   Matriz<Pixel> img;
@@ -106,56 +106,5 @@ class Imagem {
     Pixel& operator()(int coluna, int linha) {
       return img.getRef(linha, coluna);
     }    
-
-
-
-    Terreno normalizaTerreno(Terreno& terrain) {
-      int min = std::numeric_limits<int>::max();
-      int max = std::numeric_limits<int>::lowest();
-
-      Terreno tmpT(terrain.obterExpoente());
-      
-      for (int i = 0; i < terrain.obterLargura(); i++) {
-        for(int j = 0; j < terrain.obterProfundidade(); j++) {
-          int tmp  = terrain(i , j);
-          if (tmp < min) min = tmp;
-          if (tmp > max) max = tmp;
-        }
-      }
-
-      for (int i = 0; i < terrain.obterLargura(); i++) {
-        for(int j = 0; j < terrain.obterProfundidade(); j++) {
-            int tmp = terrain(i, j);
-            int valor;
-
-            if (max - min != 0) {
-                valor = 0 + (tmp - min) * (255 - 0) / (max - min);
-            } else {
-                valor = (0 + 255) / 2;
-            }
-
-            tmpT(i, j) =  valor;
-        }
-      }
-
-      return tmpT;
-    }
-
-
-    void escalaDeCinzas(Terreno& terrain) {
-      lin = terrain.obterLargura();
-      col = terrain.obterProfundidade();
-      img = Matriz<Pixel>(lin, col, {0,0,0});
-      Terreno terreno = normalizaTerreno(terrain);
-      for (int i = 0; i < lin; i++) {
-        for(int j = 0; j < col; j++) {
-          unsigned char tmp  = (unsigned char)terreno(i , j);
-
-          Pixel cinza  = {tmp, tmp, tmp};
-          img.mudarValor(i, j, cinza);     
-          
-        }
-      }
-    }
 
 };

@@ -72,7 +72,7 @@ class Paleta {
       input.close();
     }
     
-    int obterTamanho(){
+    int const obterTamanho(){
       return tamanho;
     };
 
@@ -82,7 +82,7 @@ class Paleta {
       tamanho = paletaInterna.obterTamanho();
     }
 
-    Cor obterCor(int index) {
+    Cor const obterCor(int index) {
       if (index > -1 && index < tamanho) {
         return paletaInterna[index];    
       }
